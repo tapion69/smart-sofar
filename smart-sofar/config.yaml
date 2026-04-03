@@ -1,7 +1,7 @@
 name: "Smart Sofar Node-RED"
 version: "0.1.0"
 slug: smart_sofar
-description: "Node-RED Sofar Solar bridge to MQTT (minimal serial version)"
+description: "Node-RED Sofar Solar bridge to MQTT (RS485 minimal version)"
 
 arch:
   - aarch64
@@ -20,15 +20,46 @@ map:
   - type: addon_config
     read_only: false
 
+devices:
+  - /dev/serial/by-id:/dev/serial/by-id:rwm
+
 ports:
   1892/tcp: 1892
 
 panel_icon: mdi:solar-power
 
 options:
-  serial_port: "/dev/serial/by-id/CHANGE-ME"
-  modbus_slave_id: 1
-  modbus_baudrate: 9600
+
+  ##################################
+  # INVERTER 1
+  ##################################
+
+  inv1_serial_port: "/dev/serial/by-id/CHANGE-ME-1"
+  inv1_modbus_slave_id: 1
+  inv1_modbus_baudrate: 9600
+  inv1_model: "HYD6000EP"
+
+  ##################################
+  # INVERTER 2
+  ##################################
+
+  inv2_serial_port: ""
+  inv2_modbus_slave_id: 1
+  inv2_modbus_baudrate: 9600
+  inv2_model: "HYD6000EP"
+
+  ##################################
+  # INVERTER 3
+  ##################################
+
+  inv3_serial_port: ""
+  inv3_modbus_slave_id: 1
+  inv3_modbus_baudrate: 9600
+  inv3_model: "HYD6000EP"
+
+  ##################################
+  # MQTT
+  ##################################
 
   mqtt_host: "core-mosquitto"
   mqtt_port: 1883
@@ -36,13 +67,45 @@ options:
   mqtt_pass: ""
   mqtt_prefix: "sofar"
 
+  ##################################
+  # TIMEZONE
+  ##################################
+
   timezone_mode: "Europe/Paris"
   timezone_custom: "UTC"
 
 schema:
-  serial_port: str
-  modbus_slave_id: int(1,247)
-  modbus_baudrate: list(9600|19200|38400|57600|115200)
+
+  ##################################
+  # INVERTER 1
+  ##################################
+
+  inv1_serial_port: str
+  inv1_modbus_slave_id: int(1,247)
+  inv1_modbus_baudrate: list(9600|19200|38400|57600|115200)
+  inv1_model: str?
+
+  ##################################
+  # INVERTER 2
+  ##################################
+
+  inv2_serial_port: str?
+  inv2_modbus_slave_id: int(1,247)
+  inv2_modbus_baudrate: list(9600|19200|38400|57600|115200)
+  inv2_model: str?
+
+  ##################################
+  # INVERTER 3
+  ##################################
+
+  inv3_serial_port: str?
+  inv3_modbus_slave_id: int(1,247)
+  inv3_modbus_baudrate: list(9600|19200|38400|57600|115200)
+  inv3_model: str?
+
+  ##################################
+  # MQTT
+  ##################################
 
   mqtt_host: str
   mqtt_port: int(1,65535)
@@ -50,5 +113,25 @@ schema:
   mqtt_pass: password?
   mqtt_prefix: str?
 
-  timezone_mode: list(Europe/Paris|Europe/Berlin|Europe/Brussels|Europe/Madrid|Europe/Rome|Europe/London|America/New_York|America/Chicago|America/Los_Angeles|America/Montreal|Asia/Dubai|Asia/Tokyo|Australia/Sydney|CUSTOM)
+  ##################################
+  # TIMEZONE
+  ##################################
+
+  timezone_mode: list(
+    Europe/Paris|
+    Europe/Berlin|
+    Europe/Brussels|
+    Europe/Madrid|
+    Europe/Rome|
+    Europe/London|
+    America/New_York|
+    America/Chicago|
+    America/Los_Angeles|
+    America/Montreal|
+    Asia/Dubai|
+    Asia/Tokyo|
+    Australia/Sydney|
+    CUSTOM
+  )
+
   timezone_custom: str?
